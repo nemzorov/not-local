@@ -106,7 +106,7 @@ window.addEventListener("DOMContentLoaded", () => {
     colleagues.forEach((name) => {
         const btn = document.createElement("button");
         btn.id = `btn-${name}`;
-        btn.disabled = name !== from ? true : false;
+        // btn.disabled = name !== from ? true : false;
 
         updateButtonLabel(btn, name, name === from); // если я сам — я точно online
 
@@ -124,7 +124,7 @@ window.addEventListener("DOMContentLoaded", () => {
 function addUserToUI(name) {
     const btn = document.getElementById(`btn-${name}`);
     if (btn) {
-        btn.disabled = false;
+        // btn.disabled = false;
         updateButtonLabel(btn, name, true);
     }
 }
@@ -132,7 +132,7 @@ function addUserToUI(name) {
 function removeUserFromUI(name) {
     const btn = document.getElementById(`btn-${name}`);
     if (btn) {
-        btn.disabled = true;
+        // btn.disabled = true;
         updateButtonLabel(btn, name, false);
     }
 }
