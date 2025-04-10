@@ -8,7 +8,7 @@ const BROADCAST_IP = "255.255.255.255";
 const from = "Макс"; // замените на своё
 
 // список всех коллег
-const colleagues = ["Макс", "Иван", "Олег", "Лена", "Сергей", "Ирина"];
+const colleagues = ["Макс", "Катя", "Олег", "Лена", "Сергей", "Ирина"];
 
 // кто сейчас в сети
 const onlineUsers = {}; // { username: timeoutId }
