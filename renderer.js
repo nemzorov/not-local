@@ -5,10 +5,10 @@ const PORT = 5005;
 const BROADCAST_IP = "255.255.255.255";
 
 // имя текущего пользователя
-const from = "Ирина"; // замените на своё
+const from = "Макс"; // замените на своё
 
 // список всех коллег
-const colleagues = ["Алексей", "Маша", "Олег", "Лена", "Сергей", "Ирина"];
+const colleagues = ["Макс", "Иван", "Олег", "Лена", "Сергей", "Ирина"];
 
 // кто сейчас в сети
 const onlineUsers = {}; // { username: timeoutId }
@@ -23,7 +23,6 @@ function startReceiver() {
 
             // Получили статус "я в сети"
             if (type === "status") {
-                if (sender === from) return; // не обрабатываем своё
 
                 if (!onlineUsers[sender]) {
                     addUserToUI(sender);
@@ -105,35 +104,40 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Создание кнопок для каждого сотрудника
     colleagues.forEach((name) => {
-        if (name === from) return;
-
         const btn = document.createElement("button");
-        btn.textContent = `Позвать ${name}`;
         btn.id = `btn-${name}`;
-        btn.disabled = true;
-        btn.onclick = () => sendPing(name);
+        btn.disabled = name !== from ? true : false;
+
+        updateButtonLabel(btn, name, name === from); // если я сам — я точно online
+
+        btn.onclick = () => {
+            // if (name !== from) return; // если не нужно оповещать себя
+            sendPing(name);
+        };
+
         buttonsContainer.appendChild(btn);
     });
+
 });
 
 // Отображение в интерфейсе
 function addUserToUI(name) {
     const btn = document.getElementById(`btn-${name}`);
-    if (btn) btn.disabled = false;
-
-    const el = document.getElementById("online-list");
-    if (el && !document.getElementById(`online-${name}`)) {
-        const li = document.createElement("li");
-        li.id = `online-${name}`;
-        li.textContent = name;
-        el.appendChild(li);
+    if (btn) {
+        btn.disabled = false;
+        updateButtonLabel(btn, name, true);
     }
 }
 
 function removeUserFromUI(name) {
     const btn = document.getElementById(`btn-${name}`);
-    if (btn) btn.disabled = true;
+    if (btn) {
+        btn.disabled = true;
+        updateButtonLabel(btn, name, false);
+    }
+}
 
-    const el = document.getElementById(`online-${name}`);
-    if (el) el.remove();
+function updateButtonLabel(button, name, isOnline) {
+    const status = isOnline ? "🟢 Online" : "⚫ Offline";
+    button.textContent = `Позвать ${name} — ${status}`;
 }
